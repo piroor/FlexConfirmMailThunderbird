@@ -347,9 +347,25 @@ jobs:
       - name: Build Native Messaging Host MSI
         shell: cmd
         run: |
-          .\webextensions\native-messaging-host\build_msi.bat
+          cd /d webextensions\native-messaging-host
+          echo === Current directory ===
+          cd
+          echo === Files ===
           dir
-          xcopy /I /Y .\webextensions\native-messaging-host\*.msi .
+          echo === Config ===
+          type build_msi_configs.bat
+          echo === Tools ===
+          where go-msi
+          where go
+          echo === Host binaries ===
+          dir 386\host.exe
+          dir amd64\host.exe
+          echo === Run build_msi.bat ===
+          call build_msi.bat
+          echo === Result ===
+          echo ERRORLEVEL=%ERRORLEVEL%
+          dir *.msi
+          xcopy /I /Y *.msi ..\..\
 
       - name: Upload Native Messaging Host MSI
         uses: actions/upload-artifact@v4
