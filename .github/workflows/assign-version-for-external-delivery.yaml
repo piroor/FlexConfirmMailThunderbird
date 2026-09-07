@@ -328,11 +328,6 @@ jobs:
       - name: Install go-msi
         run: choco install go-msi zip -y
 
-      - name: Make Installer
-        run: make host
-        env:
-          GOPATH: C:\Users\runneradmin\go
-
       # jq and WiX Toolset are already installed on windows-2022 image
       - name: Setup PATH
         shell: pwsh
@@ -340,6 +335,14 @@ jobs:
           echo "c:/ProgramData/chocolatey/bin" >> $Env:GITHUB_PATH
           echo "c:/Program Files/go-msi" >> $Env:GITHUB_PATH
           echo "c:/Program Files (x86)/WiX Toolset v3.11/bin" >> $Env:GITHUB_PATH
+
+      - name: Install gox
+        run: go install github.com/mitchellh/gox@latest
+
+      - name: Make Installer
+        run: make host
+        env:
+          GOPATH: C:\Users\runneradmin\go
 
       - name: Build Native Messaging Host MSI
         shell: cmd
